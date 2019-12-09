@@ -1,0 +1,69 @@
+$white-color: #fff;
+$height100: 100%;
+
+.class-headerimg{
+    background-image: url("../../assets/homebg.png")!important;
+    background-size: 100% 100%; 
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 250px!important;
+}
+.title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.btn-height{
+    height: 70;
+    width: 100%;
+    color: #070707;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.opal-icon{
+    height: 38px;
+    width: 38px;
+    position: absolute;
+    top: 3px;
+    left: 10px;
+}
+
+.scanner-svg{
+    height: 40px;
+    width: 40px;
+}
+
+.user-img{
+    height: 150px;
+    width: 150px;
+    margin: auto;;
+}
+@media only screen and (min-width: 320px) and (max-width: 568px){
+    .scanner-svg{
+        height: 25px;
+        width: 25px;;
+    }
+
+    .btn-height{
+        height: 80px;
+        width: 100%;
+        color: #070707;
+        font-size: 18px
+    }    
+}
+@media only screen and (min-width: 375px) and (max-width: 667px){
+    .scanner-svg{
+        height: 25px;
+        width: 25px;;
+    }
+
+    .btn-height{
+        height: 80px;
+        width: 100%;
+        color: #070707;
+        font-size: 18px
+    }    
+
+}

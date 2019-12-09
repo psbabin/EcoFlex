@@ -1,0 +1,38 @@
+<ion-header class="class-headerimg">
+  <div class="ion-text-center ion-text-uppercase title"></div>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-padding ion-text-center">
+  </div>
+  <ion-grid>
+    <ion-row class="ion-margin-vertical ion-padding-vertical">
+      <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
+      <ion-col size="2" class="ion-padding-vertical ion-text-center" style="padding-right: 0">
+        <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
+          style="background: #C3DBB7">
+          <ion-thumbnail class="scanner-svg">
+            <img src="../../assets/icon/barcodetool.svg">
+          </ion-thumbnail>
+        </ion-button>
+      </ion-col>
+      <ion-col size="8" class="ion-padding-vertical ion-text-center" style="padding-left: 0">
+        <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
+          style="background: #C3DBB7" (click)="gotoOrderPage()">
+          Order Scan
+        </ion-button>
+      </ion-col>
+      <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
+      <ion-col size="8" class="ion-padding-vertical ion-text-center"></ion-col>
+      <ion-col size="3" class="ion-padding-vertical ion-text-center">
+        <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
+          style="background: #ffffff" (click)="gotoHomePage()">
+          <ion-thumbnail class="scanner-svg">
+            <img src="../../assets/icon/exit-door.svg">
+          </ion-thumbnail>
+        </ion-button>
+      </ion-col>
+      <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

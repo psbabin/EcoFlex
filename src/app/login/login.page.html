@@ -1,0 +1,39 @@
+<ion-header class="class-headerimg">
+  <div class="ion-text-center ion-text-uppercase" class="title"></div>
+</ion-header>
+<ion-content hide-tabs>
+  <form [formGroup]="logingrp" (ngSubmit)="btnLogin()">
+    <ion-grid><br>
+      <br><br>
+      <div class="ion-padding">
+        <ion-item>
+          <ion-label position="floating" class="lab-font">
+            User Id
+          </ion-label>
+          <ion-input #usermailid type="email" formControlName="userEmail" class="lab-font"
+            (ionInput)="checkEmptyIdOnFocus($event)" (ionBlur)="checkEmptyIdOnBlur($event)" required></ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="errUserName">{{message[0]}}</div><br>
+        <ion-item>
+          <ion-label position="floating" class="lab-font">
+            Password
+          </ion-label>
+          <ion-input #userpaswrd type="Password" formControlName="userPwd" class="lab-font"
+            (ionInput)="checkEmptyPassOnFocus($event)" (ionBlur)="checkEmptyPassOnBlur($event)" required></ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="errPassword">{{message[1]}}</div>
+        <br><br>
+        <ion-row class="ion-align-items-center ion-justify-content-center">
+          <ion-col size="3"></ion-col>
+          <ion-col size="6">
+            <ion-button type="submit" size="medium" expand="block" class="loggbtn" color="medium">LOGIN</ion-button>
+          </ion-col>
+          <ion-col size="3"></ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </form>
+</ion-content>
+<ion-footer no-border class="ion-text-center">
+  <ion-label style="font-size: 14px;">Version: UAT (0.0.1)</ion-label>
+</ion-footer>

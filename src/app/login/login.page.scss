@@ -1,0 +1,40 @@
+
+$white-color: #fff;
+$height100: 100%;
+
+.class-headerimg {
+    background-image: url("../../assets/homebg.png")!important;
+    background-size: 100% 100%; 
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 250px!important;
+}
+
+ion-grid {
+	width:100%;
+	height: $height100;
+}
+
+ion-row {
+	height: $height100;
+}
+
+ion-col {
+	background: $white-color;
+}
+
+.loggbtn{
+	width: 100%;
+	border-radius: 5%;
+	font-weight: normal;
+	font-size: 25px;
+}
+
+.lab-font{
+	font-size: 25px;
+}
+
+.validation-errors{
+	font-size: 15px;
+	color: red;
+}
