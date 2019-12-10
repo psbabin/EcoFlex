@@ -245,6 +245,9 @@ table >tbody > tr > td:nth-child(3){
 .rowtab{
   padding: 2% 5%;
 }
+.rowtab1{
+  padding: 0% 5%;
+}
 ion-progress-bar{
   top: 10%;
 }
@@ -256,4 +259,85 @@ ion-progress-bar{
 #bar {  
   height: 1.5rem; 
   width: 7.5rem;
+}
+div.input-radio {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+  label.full {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+        flex: 1;
+    width: 0;
+    padding: 10.5px !important;
+  }
+  label {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 0 13px 0 13px;
+    border: 1px solid #c1c1c1;
+    transition: all 100ms linear;
+    -webkit-transition: all 100ms linear;
+    max-height: 42px;
+    min-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    cursor: pointer;
+    &:first-of-type {
+      margin-right: 0;
+      border-radius: 4px 0 0 4px;
+      width: 50%;
+    }
+    &:not(:first-of-type) {
+      border-left-width: 0;
+    }
+    &:last-of-type {
+      margin-left: 0;
+      border-left-width: 0;
+      width: 50%;
+      border-radius: 0 5px 5px 0;
+    }
+    &:last-of-type .active {
+      background: red;
+    }
+  }
+}
+.input-radio{
+  display: inline-block;
+}
+input[type=radio] {
+  display: none;
+}
+input[type=radio] + label {
+  border: 1px solid #b3b3b3;
+  border-radius: 3px; 
+ 
+}
+input[type=radio]:checked +.blue{
+  background: #2196f3;
+  border: 1px solid #2196f3;
+  color: #fff;
+}
+input[type=radio]:checked + label {
+  background: #2196f3;
+  border: 1px solid #2196f3;
+  color: #fff;
+ 
 }

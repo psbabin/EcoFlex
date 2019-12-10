@@ -9,6 +9,8 @@ export class ApiserviceService {
   baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
+  getOrderScan: string = 'OrdersApi/ScanOrderDetail';
+  saveorderScanold: string = 'OrdersApi/SaveScanOrder';
   isLoading: any;
   ajaxData: any;
   err: any;
@@ -32,7 +34,7 @@ export class ApiserviceService {
   async present() {
     this.isLoading = true;
     return await this.loadingCtrl.create({
-      duration: 3000,
+      duration: 1000,
       message: 'Please wait...',
       spinner: 'lines',
     }).then(a => {

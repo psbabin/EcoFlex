@@ -5,18 +5,18 @@
       <ion-row>
         <ion-col size="4" class="ion-text-left padd-left-0">
           <ion-buttons class="back-marg">
-            <ion-button style="font-size: 22px;color: #ffffff">BACK</ion-button>
+            <ion-button style="font-size: 22px;color: #ffffff" (click)="goToback()">BACK</ion-button>
           </ion-buttons>
         </ion-col>
         <ion-col size="1"></ion-col>
         <ion-col size="2" class="ion-text-center">
-          <ion-button fill='clear' class="save-center" type="submit">SAVE
+          <ion-button fill='clear' class="save-center" type="submit" (click)="orderscansubmitOld()">SAVE
           </ion-button>
         </ion-col>
         <ion-col size="1"></ion-col>
         <ion-col size="4" class="ion-text-right">
           <ion-buttons class="clear-marg">
-            <ion-button style="font-size: 22px;color: #ffffff">CLEAR</ion-button>
+            <ion-button style="font-size: 22px;color: #ffffff" (click)="clearForm()">CLEAR</ion-button>
           </ion-buttons>
         </ion-col>
       </ion-row>
@@ -24,27 +24,37 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-no-padding">
-  <form [formGroup]="orderscan">
+  <form [formGroup]="orderscanning">
+    <ion-row>
+      <ion-col size="8">
+      </ion-col>
+      <ion-col size="4">
+        <div class="input-radio">
+          <input type="radio" formControlName="orderScanNew" (change)="formselectNew()">
+          <label>
+            New
+          </label>
+          <input type="radio" formControlName="orderScanOld" (change)="formselectOld()">
+          <label>
+            Old
+          </label>
+        </div>
+      </ion-col>
+    </ion-row>
     <ion-row class="row-padd">
       <ion-col size="11">
         <ion-item>
           <ion-label position="floating" class="lab-font lab-color">Order #</ion-label>
-          <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order">
+          <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order"
+            (keyup.enter)="handleOrderScanner($event)">
           </ion-input>
         </ion-item>
-        <!-- <div class="validation-errors">
-          <div *ngFor="let validation of validation_messages['bolnumber']">
-            <div class="error-message"
-              *ngIf="bolscanning.get('bolnumber').hasError(validation['type']) && bolscanning.get('bolnumber').touched">
-              {{ validation.message }}
-            </div>
-          </div>
-        </div> -->
       </ion-col>
       <ion-col size="1"
         style="display: flex!important; align-content: center!important; align-items: center!important;">
         <ion-buttons>
-          <ion-button fill="clear" type="button" item-right style="background:white; margin-top: 100%">
+          <ion-button fill="clear" (click)="orderScan()" type="button" item-right
+            style="background:white; margin-top: 100%">
             <ion-icon name="search" style="width: 35px; height: 35px; color:darkgray"> </ion-icon>
           </ion-button>
         </ion-buttons>
@@ -53,39 +63,50 @@
     <ion-row class="row-padd">
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating" class="lab-font lab-color">Customer Name</ion-label>
-          <ion-input type="text" #customername formControlName="customername" clearInput
-            class="ion-text-uppercase lab-font">
-          </ion-input>
+          <ion-label position="floating" class="lab-font lab-color">Customer Name :
+            &nbsp;{{this.custName}}
+          </ion-label>
+          <br>
         </ion-item>
       </ion-col>
     </ion-row>
-
     <ion-row class="rowtab">
       <ion-col size="4">
-        <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
+        </ion-item>
       </ion-col>
       <ion-col size="4" class="ion-text-center">
-        <ion-label position="floating" class="lab-font lab-color">Container#</ion-label>
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">Container#</ion-label>
+        </ion-item>
       </ion-col>
       <ion-col size="4" class="ion-text-right">
-        <ion-label position="floating" class="lab-font lab-color">Bin Location</ion-label>
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">Bin Location</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let item of scanItemList;let i = index" class="rowtab">
+    <ion-row *ngFor="let idx of itemLists" class="rowtab1">
       <ion-col size="4">
-        <ion-label position="floating" class="lab-font lab-color"></ion-label>
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color" (keyup.enter)="handleItemScanner($event)">
+            {{idx.modelNumber}}</ion-label>
+        </ion-item>
       </ion-col>
-      <ion-col size="4" class="ion-text-center">
-        <ion-label position="floating" class="lab-font lab-color"></ion-label>
+      <ion-col size="4">
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">{{idx.containerNumber}}</ion-label>
+        </ion-item>
       </ion-col>
-      <ion-col size="2">
+      <ion-col size="4">
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">{{idx.binLocation}}</ion-label>
+        </ion-item>
       </ion-col>
-      <ion-col size="2">
-        <ion-progress-bar color="primary" width="50%" id="bar">
-        </ion-progress-bar>
-      </ion-col>
+
     </ion-row>
+
   </form>
   <ion-toolbar class="tool1">
     <ion-grid style="padding: 3% 5%">
@@ -115,3 +136,115 @@
     </ion-col>
   </ion-row>
 </ion-content>
+<!-- <ion-content class="ion-no-padding">
+    <form [formGroup]="orderscanning">
+      <ion-row>
+        <ion-col size="8">
+        </ion-col>
+        <ion-col size="4">
+          <div class="input-radio">
+            <input type="radio">
+            <label>
+              New
+            </label>
+            <input type="radio">
+            <label>
+              Old
+            </label>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row-padd">
+        <ion-col size="11">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Order #</ion-label>
+            <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order"
+              (keyup.enter)="handleOrderScanner($event)">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="1"
+          style="display: flex!important; align-content: center!important; align-items: center!important;">
+          <ion-buttons>
+            <ion-button fill="clear" (click)="orderScan()" type="button" item-right
+              style="background:white; margin-top: 100%">
+              <ion-icon name="search" style="width: 35px; height: 35px; color:darkgray"> </ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row-padd">
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Customer Name :
+             </ion-label>
+            <br>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="rowtab">
+        <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Serial#</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4" class="ion-text-center">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Model#</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Container/Bin</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let idx of itemLists" class="rowtab1">
+        <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color" (keyup.enter)="handleItemScanner($event)">
+              {{idx.modelNumber}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">{{idx.containerNumber}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4">
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">{{idx.binLocation}}</ion-label>
+          </ion-item>
+        </ion-col>
+  
+      </ion-row>
+  
+    </form>
+    <ion-toolbar class="tool1">
+      <ion-grid style="padding: 3% 5%">
+        <ion-row>
+          <ion-col size="5">
+            <ion-label class="lab-font">Auto </ion-label>
+          </ion-col>
+          <ion-col size="2" class="ion-text-center">
+            <label class="switch"><input type="checkbox">
+              <div class="slider rnd"><span class="on">ON</span><span class="off">OFF</span></div>
+            </label>
+          </ion-col>
+          <ion-col size="5"></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+    <ion-row class="marginTL10">
+      <ion-col size="12">
+        <ion-label position="stacked" class="event-font marginTL10">Event Log</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="ion-padding-horizontal">
+          <ion-textarea rows="3" [readonly]='true' [(ngModel)]="eventLog" class="event-font-italic"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-content> -->
