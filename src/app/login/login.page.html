@@ -26,7 +26,8 @@
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <ion-col size="3"></ion-col>
           <ion-col size="6">
-            <ion-button type="submit" size="medium" expand="block" class="loggbtn" color="medium">LOGIN</ion-button>
+            <ion-button type="submit" size="medium" expand="block" class="loggbtn" [disabled]="logingrp.invalid"
+              color="medium">LOGIN</ion-button>
           </ion-col>
           <ion-col size="3"></ion-col>
         </ion-row>

@@ -33,7 +33,8 @@ export class LoginPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.message = JSON.parse(localStorage.getItem(("Message")));
+    let msg = JSON.parse(localStorage.getItem(("Message")));
+    if (msg) this.message = msg;
     console.log("message", this.message)
     let id = localStorage.getItem("userName");
     this.logingrp.reset();
