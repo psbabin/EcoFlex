@@ -11,7 +11,7 @@
         <!-- <ion-col size="1"></ion-col> -->
         <!-- <ion-col size="2" class="ion-text-center"> -->
         <ion-button fill='clear' class="save-center" type="submit"
-          [disabled]="orderscanning.invalid || autoSave == true" (click)="orderScanSubmitOld()">SAVE
+          [disabled]="orderscanning.invalid || autoSave == true" (click)="orderScanSubmit()">SAVE
         </ion-button>
         <!-- </ion-col> -->
         <!-- <ion-col size="1"></ion-col> -->
@@ -43,17 +43,15 @@
     <ion-row class="row-padd">
       <ion-col size="11">
         <ion-item>
-          <ion-label position="floating" class="lab-font lab-color">Order #</ion-label>
+          <ion-label position="floating" class="lab-font lab-color">Order <span style="color: red;">*</span></ion-label>
           <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order"
             (keyup.enter)="handleOrderScanner($event)">
           </ion-input>
         </ion-item>
       </ion-col>
-      <ion-col size="1"
-        style="display: flex!important; align-content: center!important; align-items: center!important;">
+      <ion-col size="1" class="search-btn-col">
         <ion-buttons>
-          <ion-button fill="clear" (click)="orderScan()" type="button" item-right
-            style="background:white; margin-top: 100%">
+          <ion-button fill="clear" (click)="orderScan()" type="button">
             <ion-icon name="search" style="width: 35px; height: 35px; color:darkgray"> </ion-icon>
           </ion-button>
         </ion-buttons>
@@ -70,93 +68,186 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="old">
-      <ion-row class="rowtab">
-        <ion-col size="3.5">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
-          </ion-item>
+      <ion-row *ngIf="!appComp.isTablet">
+        <ion-col size="12">
+          <table *ngFor="let idx of itemCount">
+            <tbody>
+              <tr>
+                <th></th>
+                <th>Model <span style="color: red;">*</span></th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #modelInputs class="lab-font ion-text-uppercase" id="modelNo_{{idx}}"
+                      formControlName="modelNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+                <ion-icon name="close" slot="end" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Container #</th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
+                      formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Bin Location</th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}"
+                      formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('bin', idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </ion-col>
-        <ion-col size="3.5" class="ion-text-center">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Container#</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4.5" class="ion-text-right">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Bin Location</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="0.5"></ion-col>
       </ion-row>
-      <ion-row *ngFor="let idx of itemCount" #itemRows class="rowtab1">
-        <ion-col size="3.5">
-          <ion-item>
-            <ion-input type="text" #modelInputs class="lab-font ion-text-uppercase" id="modelNo_{{idx}}"
-              formControlName="modelNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="3.5">
-          <ion-item>
-            <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
-              formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4.5">
-          <ion-item>
-            <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}" formControlName="binLoc_{{idx}}"
-              (keyup.enter)="handleItemScanner('bin', idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="0.5">
-          <ion-icon name="close" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+      <ion-row *ngIf="appComp.isTablet">
+        <ion-col size="12">
+          <ion-row class="rowtab">
+            <ion-col size="3.5">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3.5" class="ion-text-center">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Container#</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="4.5" class="ion-text-right">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Bin Location</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="0.5"></ion-col>
+          </ion-row>
+          <ion-row *ngFor="let idx of itemCount" #itemRows class="rowtab1">
+            <ion-col size="3.5">
+              <ion-item>
+                <ion-input type="text" #modelInputs class="lab-font ion-text-uppercase" id="modelNo_{{idx}}"
+                  formControlName="modelNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3.5">
+              <ion-item>
+                <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
+                  formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="4.5">
+              <ion-item>
+                <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}"
+                  formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('bin', idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="0.5">
+              <ion-icon name="close" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
     </ion-row>
     <ion-row *ngIf="new">
-      <ion-row class="rowtab">
-        <ion-col size="3">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Serial</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="3" class="ion-text-center">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Model #</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="6" class="ion-text-right">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Container / Bin Location</ion-label>
-          </ion-item>
+      <ion-row *ngIf="!appComp.isTablet">
+        <ion-col size="12">
+          <table *ngFor="let idx of itemCount">
+            <tbody>
+              <tr>
+                <th></th>
+                <th>Serial<span style="color: red;">*</span></th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
+                      formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+                <ion-icon name="close" slot="end" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Model</th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #modelInputs readonly class="lab-font" id="modelNo_{{idx}}"
+                      formControlName="modelNo_{{idx}}" (keyup.enter)="handleItemScanner('model', idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Container / Bin Location</th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #binLocInputs readonly class="lab-font" id="binLoc_{{idx}}"
+                      formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('binLoc', idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </ion-col>
       </ion-row>
-      <ion-row *ngFor="let idx of itemCount" class="rowtab1">
-        <ion-col size="3.5">
-          <ion-item>
-            <ion-input type="text" #modelInputs class="lab-font ion-text-uppercase" id="modelNo_{{idx}}"
-              formControlName="modelNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="3.5">
-          <ion-item>
-            <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
-              formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4.5">
-          <ion-item>
-            <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}" formControlName="binLoc_{{idx}}"
-              (keyup.enter)="handleItemScanner('bin', idx)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="0.5">
-          <ion-icon name="close" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+      <ion-row *ngIf="appComp.isTablet">
+        <ion-col size="12">
+          <ion-row class="rowtab">
+            <ion-col size="3">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Serial <span style="color: red;">*</span>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3" class="ion-text-center">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Container / Bin Location</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let idx of itemCount" class="rowtab1">
+            <ion-col size="3.5">
+              <ion-item>
+                <ion-input type="text" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
+                  formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3.5">
+              <ion-item>
+                <ion-input type="text" #modelInputs readonly class="lab-font" id="modelNo_{{idx}}"
+                  formControlName="modelNo_{{idx}}" (keyup.enter)="handleItemScanner('model', idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="4.5">
+              <ion-item>
+                <ion-input type="text" #binLocInputs readonly class="lab-font" id="binLoc_{{idx}}"
+                  formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('binLoc', idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="0.5">
+              <ion-icon name="close" class="clear-icon" (click)="clearSerialField(idx)"></ion-icon>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
     </ion-row>
@@ -192,115 +283,3 @@
     </ion-col>
   </ion-row>
 </ion-content>
-<!-- <ion-content class="ion-no-padding">
-    <form [formGroup]="orderscanning">
-      <ion-row>
-        <ion-col size="8">
-        </ion-col>
-        <ion-col size="4">
-          <div class="input-radio">
-            <input type="radio">
-            <label>
-              New
-            </label>
-            <input type="radio">
-            <label>
-              Old
-            </label>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row class="row-padd">
-        <ion-col size="11">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Order #</ion-label>
-            <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order"
-              (keyup.enter)="handleOrderScanner($event)">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="1"
-          style="display: flex!important; align-content: center!important; align-items: center!important;">
-          <ion-buttons>
-            <ion-button fill="clear" (click)="orderScan()" type="button" item-right
-              style="background:white; margin-top: 100%">
-              <ion-icon name="search" style="width: 35px; height: 35px; color:darkgray"> </ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
-      <ion-row class="row-padd">
-        <ion-col size="12">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Customer Name :
-             </ion-label>
-            <br>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row class="rowtab">
-        <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Serial#</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4" class="ion-text-center">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Model#</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4" class="ion-text-right">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">Container/Bin</ion-label>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngFor="let idx of itemLists" class="rowtab1">
-        <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color" (keyup.enter)="handleItemScanner($event)">
-              {{idx.modelNumber}}</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">{{idx.containerNumber}}</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="4">
-          <ion-item>
-            <ion-label position="floating" class="lab-font lab-color">{{idx.binLocation}}</ion-label>
-          </ion-item>
-        </ion-col>
-  
-      </ion-row>
-  
-    </form>
-    <ion-toolbar class="tool1">
-      <ion-grid style="padding: 3% 5%">
-        <ion-row>
-          <ion-col size="5">
-            <ion-label class="lab-font">Auto </ion-label>
-          </ion-col>
-          <ion-col size="2" class="ion-text-center">
-            <label class="switch"><input type="checkbox">
-              <div class="slider rnd"><span class="on">ON</span><span class="off">OFF</span></div>
-            </label>
-          </ion-col>
-          <ion-col size="5"></ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-toolbar>
-    <ion-row class="marginTL10">
-      <ion-col size="12">
-        <ion-label position="stacked" class="event-font marginTL10">Event Log</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-item class="ion-padding-horizontal">
-          <ion-textarea rows="3" [readonly]='true' [(ngModel)]="eventLog" class="event-font-italic"></ion-textarea>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-content> -->

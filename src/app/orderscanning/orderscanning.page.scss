@@ -41,6 +41,17 @@ $text-color: #070707;
   border-radius: 50%;
 }
 
+ion-item {
+  --padding-start: 0;
+  --background-focused: transparent;
+}
+
+.search-btn-col {
+  display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
 .toggle-color {
   --ion-color-base: #00bfcc !important;
 }
@@ -224,22 +235,11 @@ input:checked + .slider .off {
   font-size: 15px;
   color: red;
 }
-table > tbody > tr > td:nth-child(1) {
-  width: 45%;
-  padding: 0% 0% 0% 5%;
-}
-table > tbody > tr > td:nth-child(2) {
-  width: 45%;
-}
-table > tbody > tr > td:nth-child(3) {
-  width: 45%;
-}
-// table >tbody > tr{
-//   padding: 0% 5% 0% 5%;
-// }
+
 .rowtab {
   padding: 2% 3%;
 }
+
 .rowtab1 {
   padding: 0% 3%;
 }
@@ -261,7 +261,7 @@ div.input-radio {
   -webkit-box-flex: 1;
   flex: 1;
   -webkit-box-pack: center;
-  width: 30%;
+  width: 35%;
   height: 55px;
   -webkit-box-align: center;
   align-items: center;
@@ -325,9 +325,9 @@ input[type="radio"]:checked + label {
 }
 
 input[type="radio"]:not(:checked) + label {
-  background: #3dd8e3;
-  border: 1px solid #3dd8e3;
-  color: #fff;
+  background: #ffffff;
+  border: 1px solid #07aeba;
+  color: #07aeba;
 }
 
 .clear-icon {
@@ -350,7 +350,7 @@ input[type="radio"]:not(:checked) + label {
   }
 
   ion-button {
-    font-size: 18px !important;
+    font-size: 16px !important;
   }
 
   .back-marg {
@@ -362,4 +362,56 @@ input[type="radio"]:not(:checked) + label {
     width: 75px;
     font-size: 20px;
   }
+
+  div.input-radio {
+    font-size: 15px;
+  }
+
+  table {
+    width: 94%;
+    margin: 1rem auto;
+    border: 1px solid gray;
+    border-radius: 10px 0 0 10px;
+    border-collapse: initial;
+  }
+
+  tbody {
+    tr:first-of-type th:nth-child(odd){
+      border-top-left-radius:10px ;
+    }
+    tr:last-of-type th:nth-child(odd){
+      border-bottom-left-radius:10px ;
+    }
+  }
+
+  tbody tr {
+    th {
+      font-weight: normal;
+      font-size: 15px;
+    }
+
+    th:nth-child(odd) {
+      background: #41d8e3;
+      width: 6%;
+    }
+
+    td {
+      width: 55%;
+    }
+  } 
+
+  table tbody tr th, td {
+    text-align: left;
+    padding: 0.25rem;
+  }
+
+  .clear-icon {
+    font-size: 40px;
+    width: 25px;
+  }
+
+  .event-font-italic[_ngcontent-iov-c1] {
+    font-size: 13px;
+}
+
 }

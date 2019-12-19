@@ -11,10 +11,13 @@ export class ApiserviceService {
   errMessage: string = 'UserApi/GetResponseMessages';
   getOrderScan: string = 'OrdersApi/ScanOrderDetail';
   saveorderScanold: string = 'OrdersApi/SaveScanOrder';
+  serialVerify: String = "ordersapi/SerialNumberVerification";
+
   isLoading: any;
   ajaxData: any;
   err: any;
   errorMessages: any;
+
   constructor(public http: HttpClient,
     public toastController: ToastController,
     public loadingCtrl: LoadingController) { }
@@ -34,7 +37,7 @@ export class ApiserviceService {
   async present() {
     this.isLoading = true;
     return await this.loadingCtrl.create({
-      duration: 1000,
+      duration: 3000,
       message: 'Please wait...',
       spinner: 'lines',
     }).then(a => {

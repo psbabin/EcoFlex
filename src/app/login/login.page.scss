@@ -34,7 +34,16 @@ ion-col {
 	font-size: 25px;
 }
 
-.validation-errors{
+.error-message{
 	font-size: 15px;
 	color: red;
+	position: relative;
+	left: 2.5%;
+}
+
+@media (max-height: 736px) {
+	.error-message{
+		font-size: 12px;
+		left: 5%;
+	}
 }

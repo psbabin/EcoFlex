@@ -11,6 +11,7 @@ import { ApiserviceService } from './apiservice.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  isTablet: boolean;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -19,6 +20,8 @@ export class AppComponent {
   ) {
     this.initializeApp();
     this.getErrorMessages();
+    console.log();
+    this.isTablet = this.platform.is('ipad');
   }
 
   initializeApp() {
