@@ -361,11 +361,11 @@ export class OrderscanningPage implements OnInit {
       "isNewScreen": this.new ? true : false
     }
     console.log(jsonobj);
-    return
     this.ecoFlexService.present();
     this.ecoFlexService.ajaxCallService(savescanorder, "post", jsonobj).then(resp => {
       if (resp['status'] == 'Success') {
         this.ecoFlexService.PresentToast(resp['message'], "success");
+        this.clearForm();
       } else {
         this.ecoFlexService.PresentToast(resp['message'], "danger");
       }
