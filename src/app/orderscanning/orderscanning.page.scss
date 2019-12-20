@@ -343,7 +343,7 @@ input[type="radio"]:not(:checked) + label {
   right: 15px;
 }
 
-@media (max-height: 736px) {
+@media (max-width: 414px) {
   .title {
     font-size: 23px;
     font-weight: 500;

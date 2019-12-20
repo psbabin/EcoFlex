@@ -169,7 +169,7 @@
                 <th>Serial<span style="color: red;">*</span></th>
                 <td>
                   <ion-item>
-                    <ion-input type="text" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
+                    <ion-input type="number" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
                       formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
                     </ion-input>
                   </ion-item>
@@ -225,7 +225,7 @@
           <ion-row *ngFor="let idx of itemCount" class="rowtab1">
             <ion-col size="3.5">
               <ion-item>
-                <ion-input type="text" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
+                <ion-input type="number" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
                   formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
                 </ion-input>
               </ion-item>
