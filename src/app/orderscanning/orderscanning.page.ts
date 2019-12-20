@@ -30,6 +30,7 @@ export class OrderscanningPage implements OnInit {
   itemCount: any = [];
   autoSave: boolean;
   message: any;
+  checked: any;
 
   constructor(
     private formBuilder: FormBuilder,
