@@ -63,7 +63,6 @@
           <ion-label position="floating" class="lab-font lab-color">Customer Name :
             &nbsp;{{this.custName}}
           </ion-label>
-          <br>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -223,21 +222,21 @@
             </ion-col>
           </ion-row>
           <ion-row *ngFor="let idx of itemCount" class="rowtab1">
-            <ion-col size="3.5">
+            <ion-col size="3">
               <ion-item>
                 <ion-input type="number" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
                   formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
                 </ion-input>
               </ion-item>
             </ion-col>
-            <ion-col size="3.5">
+            <ion-col size="3">
               <ion-item>
                 <ion-input type="text" #modelInputs readonly class="lab-font" id="modelNo_{{idx}}"
                   formControlName="modelNo_{{idx}}" (keyup.enter)="handleItemScanner('model', idx)">
                 </ion-input>
               </ion-item>
             </ion-col>
-            <ion-col size="4.5">
+            <ion-col size="5.5">
               <ion-item>
                 <ion-input type="text" #binLocInputs readonly class="lab-font" id="binLoc_{{idx}}"
                   formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('binLoc', idx)">
