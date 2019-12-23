@@ -169,7 +169,7 @@ export class OrderscanningPage implements OnInit {
     let temp: any = 0, valid;
     if (value != '' && value != null) {
       if (elementId.startsWith('serial')) {
-        this.ecoFlexService.present();
+        // this.ecoFlexService.present();
         let url = this.ecoFlexService.baseUrl + this.ecoFlexService.serialVerify;
         let jsonobj = {
           "OrderId": this.orderid,
@@ -222,20 +222,20 @@ export class OrderscanningPage implements OnInit {
               }
             }            
           } else {
+            this.ecoFlexService.PresentToast(resp['message'], "danger");
             evt.target.value = '';
             setTimeout(() => {
               this.serialInputs.toArray()[index-1].setFocus();
-            }, 300);
-            this.ecoFlexService.PresentToast(resp['message'], "danger");
+            }, 800);
           }
-          this.ecoFlexService.dismiss();
+          // this.ecoFlexService.dismiss();
         })
         if (temp >= this.itemLists.length) {
           this.ecoFlexService.PresentToast(this.message[5], "danger");
           this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
           evt.target.value = '';
         }
-        this.ecoFlexService.dismiss();
+        // this.ecoFlexService.dismiss();
       } else {
         for (let idx in this.itemLists) {
           if (value == this.itemLists[idx]['modelNumber']) {
@@ -362,11 +362,11 @@ export class OrderscanningPage implements OnInit {
       "isNewScreen": this.new ? true : false
     }
     console.log(jsonobj);
-    return
     this.ecoFlexService.present();
     this.ecoFlexService.ajaxCallService(savescanorder, "post", jsonobj).then(resp => {
       if (resp['status'] == 'Success') {
         this.ecoFlexService.PresentToast(resp['message'], "success");
+        this.clearForm();
       } else {
         this.ecoFlexService.PresentToast(resp['message'], "danger");
       }
