@@ -222,11 +222,11 @@ export class OrderscanningPage implements OnInit {
               }
             }            
           } else {
+            this.ecoFlexService.PresentToast(resp['message'], "danger");
             evt.target.value = '';
             setTimeout(() => {
               this.serialInputs.toArray()[index-1].setFocus();
-            }, 300);
-            this.ecoFlexService.PresentToast(resp['message'], "danger");
+            }, 800);
           }
           this.ecoFlexService.dismiss();
         })
@@ -388,7 +388,7 @@ export class OrderscanningPage implements OnInit {
 
   //Method to clear row data
   clearSerialField(idx) {
-    let value = this.orderscanning.controls['modelNo_' + idx].value;
+    let value = this.orderscanning.controls['modelNo_' + idx].value.toUpperCase();
     if (value != '' && value != null) {
       for (let item of this.itemLists) {
         if (item['modelNumber'] == value) {
