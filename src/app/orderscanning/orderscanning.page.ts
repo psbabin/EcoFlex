@@ -91,7 +91,7 @@ export class OrderscanningPage implements OnInit {
     setTimeout(() => {
       let value = evt.target.value;
       this.orderSearch(value);
-    }, 800);
+    }, 500);
   }
 
   //Method For Scan OrderNo via Search
@@ -269,7 +269,7 @@ export class OrderscanningPage implements OnInit {
         }
       }
 
-    }, 800);
+    }, 500);
   }
 
   //Method to scan container & bin location
@@ -304,7 +304,7 @@ export class OrderscanningPage implements OnInit {
         }
       }
 
-    }, 800);
+    }, 500);
   }
 
   //Method enable/disable auto save
