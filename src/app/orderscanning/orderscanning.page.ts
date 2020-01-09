@@ -180,6 +180,7 @@ export class OrderscanningPage implements OnInit {
           this.ecoFlexService.ajaxCallService(url, "post", jsonobj).then(resp => {
             if (resp['status'] != 'Fail') {
               let items = resp['itemList'];
+              debugger
               for (let idx in this.itemLists) {
                 if (items[0]['modelNumber'] == this.itemLists[idx]['modelNumber']) {
                   if (!this.itemLists[idx]['isScanned']) {
@@ -269,7 +270,7 @@ export class OrderscanningPage implements OnInit {
         }
       }
 
-    }, 500);
+    }, 300);
   }
 
   //Method to scan container & bin location
@@ -304,7 +305,7 @@ export class OrderscanningPage implements OnInit {
         }
       }
 
-    }, 500);
+    }, 300);
   }
 
   //Method enable/disable auto save
@@ -349,14 +350,26 @@ export class OrderscanningPage implements OnInit {
     items.map(item => {
       for (let i of this.itemCount) {
         if (item['modelNumber'] == this.orderscanning.controls['modelNo_' + i].value) {
-          this.itemLists.push({
-            modelNumber: this.orderscanning.controls['modelNo_' + i].value,
-            containerNumber: this.orderscanning.controls['container_' + i].value,
-            binLocation: this.orderscanning.controls['binLoc_' + i].value,
-            isScanned: item['isScanned'],
-            itemId: item['itemId'],
-            quantity: 1
-          })
+          if (this.new) {
+            let val = this.orderscanning.controls['binLoc_' + i].value.split('/');
+            this.itemLists.push({
+              modelNumber: this.orderscanning.controls['modelNo_' + i].value,
+              containerNumber: val[0],
+              binLocation: val[1].trim(),
+              isScanned: item['isScanned'],
+              itemId: item['itemId'],
+              quantity: 1
+            })
+          } else {
+            this.itemLists.push({
+              modelNumber: this.orderscanning.controls['modelNo_' + i].value,
+              containerNumber: this.orderscanning.controls['container_' + i].value,
+              binLocation: this.orderscanning.controls['binLoc_' + i].value,
+              isScanned: item['isScanned'],
+              itemId: item['itemId'],
+              quantity: 1
+            })
+          }
         }
       }
     })
