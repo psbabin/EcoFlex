@@ -169,7 +169,7 @@ export class OrderscanningPage implements OnInit {
     let temp: any = 0, valid;
     if (value != '' && value != null) {
       if (elementId.startsWith('serial')) {
-        this.ecoFlexService.present();
+        // this.ecoFlexService.present();
         let url = this.ecoFlexService.baseUrl + this.ecoFlexService.serialVerify;
         let jsonobj = {
           "OrderId": this.orderid,
@@ -226,16 +226,16 @@ export class OrderscanningPage implements OnInit {
             evt.target.value = '';
             setTimeout(() => {
               this.serialInputs.toArray()[index-1].setFocus();
-            }, 800);
+            }, 300);
           }
-          this.ecoFlexService.dismiss();
+          // this.ecoFlexService.dismiss();
         })
         if (temp >= this.itemLists.length) {
           this.ecoFlexService.PresentToast(this.message[5], "danger");
           this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
           evt.target.value = '';
         }
-        this.ecoFlexService.dismiss();
+        // this.ecoFlexService.dismiss();
       } else {
         for (let idx in this.itemLists) {
           if (value == this.itemLists[idx]['modelNumber']) {
