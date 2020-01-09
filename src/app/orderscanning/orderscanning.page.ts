@@ -129,11 +129,11 @@ export class OrderscanningPage implements OnInit {
               if (this.new) {
                 this.orderscanning.addControl('serialNo_' + (Number(y) + 1), new FormControl('', Validators.required));
                 this.orderscanning.addControl('modelNo_' + (Number(y) + 1), new FormControl('', Validators.required));
-                this.orderscanning.addControl('binLoc_' + (Number(y) + 1), new FormControl('', Validators.required));             
+                this.orderscanning.addControl('binLoc_' + (Number(y) + 1), new FormControl('', Validators.required));
               } else {
                 this.orderscanning.addControl('modelNo_' + (Number(y) + 1), new FormControl('', Validators.required));
                 this.orderscanning.addControl('container_' + (Number(y) + 1), new FormControl('', Validators.required));
-                this.orderscanning.addControl('binLoc_' + (Number(y) + 1), new FormControl('', Validators.required));             
+                this.orderscanning.addControl('binLoc_' + (Number(y) + 1), new FormControl('', Validators.required));
               }
             }
             this.eventLog = 'Order # ' + ordervalue + ' is successfully scanned \n' + this.eventLog;
@@ -165,138 +165,146 @@ export class OrderscanningPage implements OnInit {
 
   handleModelScanner(evt, index) {
     let elementId = evt.currentTarget.id;
-    let value = evt.target.value.toUpperCase();
-    let temp: any = 0, valid;
-    if (value != '' && value != null) {
-      if (elementId.startsWith('serial')) {
-        // this.ecoFlexService.present();
-        let url = this.ecoFlexService.baseUrl + this.ecoFlexService.serialVerify;
-        let jsonobj = {
-          "OrderId": this.orderid,
-          "SerialNumber": value
-        }
-        this.ecoFlexService.ajaxCallService(url, "post", jsonobj).then(resp => {
-          if (resp['status'] != 'Fail') {
-            let items = resp['itemList'];
-            for (let idx in this.itemLists) {
-              if (items[0]['modelNumber'] == this.itemLists[idx]['modelNumber']) {
-                if (!this.itemLists[idx]['isScanned']) {
-                  this.itemLists[idx]['scanCount']++;
-                  this.orderscanning.controls['serialNo_' + index].disable();
-                  this.orderscanning.controls['modelNo_' + index].setValue(items[0]['modelNumber']);
-                  this.orderscanning.controls['binLoc_' + index].setValue(items[0]['containerNumber'] + '/ ' + items[0]['binLocation']);
-                  console.log(this.orderscanning);
-                  if (this.itemCount.length > index) {
-                    setTimeout(() => {
-                      this.serialInputs.toArray()[index].setFocus();
-                    }, 300);
-                  }
-                  if (this.itemLists[idx]['scanCount'] == this.itemLists[idx]['quantity']) {
-                    this.itemLists[idx]['isScanned'] = true;
-                  }
-                  for (let idx of this.itemCount) {
-                    if (this.orderscanning.controls['modelNo_' + idx].value != '' && this.orderscanning.controls['modelNo_' + idx].value != null &&
-                      this.orderscanning.controls['serialNo_' + idx].value != '' && this.orderscanning.controls['serialNo_' + idx].value != null &&
-                      this.orderscanning.controls['binLoc_' + idx].value != '' && this.orderscanning.controls['binLoc_' + idx].value != null) {
-                      valid = true;
-                    } else {
-                      valid = false;
-                      return valid;
+
+    setTimeout(() => {
+      let value = evt.target.value.toUpperCase();
+      let temp: any = 0, valid;
+      if (value != '' && value != null) {
+        if (elementId.startsWith('serial')) {
+          // this.ecoFlexService.present();
+          let url = this.ecoFlexService.baseUrl + this.ecoFlexService.serialVerify;
+          let jsonobj = {
+            "OrderId": this.orderid,
+            "SerialNumber": value
+          }
+          this.ecoFlexService.ajaxCallService(url, "post", jsonobj).then(resp => {
+            if (resp['status'] != 'Fail') {
+              let items = resp['itemList'];
+              for (let idx in this.itemLists) {
+                if (items[0]['modelNumber'] == this.itemLists[idx]['modelNumber']) {
+                  if (!this.itemLists[idx]['isScanned']) {
+                    this.itemLists[idx]['scanCount']++;
+                    this.orderscanning.controls['serialNo_' + index].disable();
+                    this.orderscanning.controls['modelNo_' + index].setValue(items[0]['modelNumber']);
+                    this.orderscanning.controls['binLoc_' + index].setValue(items[0]['containerNumber'] + '/ ' + items[0]['binLocation']);
+                    console.log(this.orderscanning);
+                    if (this.itemCount.length > index) {
+                      setTimeout(() => {
+                        this.serialInputs.toArray()[index].setFocus();
+                      }, 300);
                     }
-                  }
-                  if (valid) {
-                    //Auto save method
-                    if (this.autoSave) {
-                      this.orderScanSubmit();
+                    if (this.itemLists[idx]['scanCount'] == this.itemLists[idx]['quantity']) {
+                      this.itemLists[idx]['isScanned'] = true;
+                    }
+                    for (let idx of this.itemCount) {
+                      if (this.orderscanning.controls['modelNo_' + idx].value != '' && this.orderscanning.controls['modelNo_' + idx].value != null &&
+                        this.orderscanning.controls['serialNo_' + idx].value != '' && this.orderscanning.controls['serialNo_' + idx].value != null &&
+                        this.orderscanning.controls['binLoc_' + idx].value != '' && this.orderscanning.controls['binLoc_' + idx].value != null) {
+                        valid = true;
+                      } else {
+                        valid = false;
+                        return valid;
+                      }
+                    }
+                    if (valid) {
+                      //Auto save method
+                      if (this.autoSave) {
+                        this.orderScanSubmit();
+                      }
+                    }
+                  } else {
+                    if (this.itemLists[idx]['isScanned']) {
+                      this.ecoFlexService.PresentToast(this.message[4], "danger");
+                      evt.target.value = '';
+                      break;
                     }
                   }
                 } else {
-                  if (this.itemLists[idx]['isScanned']) {
-                    this.ecoFlexService.PresentToast(this.message[4], "danger");
-                    evt.target.value = '';
-                    break;
-                  }
+                  temp++;
                 }
-              } else {
-                temp++;
-              }
-            }            
-          } else {
-            this.ecoFlexService.PresentToast(resp['message'], "danger");
-            evt.target.value = '';
-            setTimeout(() => {
-              this.serialInputs.toArray()[index-1].setFocus();
-            }, 300);
-          }
-          // this.ecoFlexService.dismiss();
-        })
-        if (temp >= this.itemLists.length) {
-          this.ecoFlexService.PresentToast(this.message[5], "danger");
-          this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
-          evt.target.value = '';
-        }
-        // this.ecoFlexService.dismiss();
-      } else {
-        for (let idx in this.itemLists) {
-          if (value == this.itemLists[idx]['modelNumber']) {
-            if (!this.itemLists[idx]['isScanned']) {
-              this.itemLists[idx]['scanCount']++;
-              this.orderscanning.controls['modelNo_' + index].disable();
-              setTimeout(() => {
-                this.containerInputs.toArray()[index - 1].setFocus();
-              }, 300);
-              if (this.itemLists[idx]['scanCount'] == this.itemLists[idx]['quantity']) {
-                this.itemLists[idx]['isScanned'] = true;
               }
             } else {
-              if (this.itemLists[idx]['isScanned']) {
-                this.ecoFlexService.PresentToast(this.message[4], "danger");
-                evt.target.value = '';
-                break;
-              }
+              this.ecoFlexService.PresentToast(resp['message'], "danger");
+              evt.target.value = '';
+              setTimeout(() => {
+                this.serialInputs.toArray()[index - 1].setFocus();
+              }, 300);
             }
-          } else {
-            temp++;
+            // this.ecoFlexService.dismiss();
+          })
+          if (temp >= this.itemLists.length) {
+            this.ecoFlexService.PresentToast(this.message[5], "danger");
+            this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
+            evt.target.value = '';
+          }
+          // this.ecoFlexService.dismiss();
+        } else {
+          for (let idx in this.itemLists) {
+            if (value == this.itemLists[idx]['modelNumber']) {
+              if (!this.itemLists[idx]['isScanned']) {
+                this.itemLists[idx]['scanCount']++;
+                this.orderscanning.controls['modelNo_' + index].disable();
+                setTimeout(() => {
+                  this.containerInputs.toArray()[index - 1].setFocus();
+                }, 300);
+                if (this.itemLists[idx]['scanCount'] == this.itemLists[idx]['quantity']) {
+                  this.itemLists[idx]['isScanned'] = true;
+                }
+              } else {
+                if (this.itemLists[idx]['isScanned']) {
+                  this.ecoFlexService.PresentToast(this.message[4], "danger");
+                  evt.target.value = '';
+                  break;
+                }
+              }
+            } else {
+              temp++;
+            }
+          }
+          if (temp >= this.itemLists.length) {
+            this.ecoFlexService.PresentToast(this.message[5], "danger");
+            this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
+            evt.target.value = '';
           }
         }
-        if (temp >= this.itemLists.length) {
-          this.ecoFlexService.PresentToast(this.message[5], "danger");
-          this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
-          evt.target.value = '';
-        }
       }
-    }
+
+    }, 800);
   }
 
   //Method to scan container & bin location
   handleItemScanner(type, index) {
     let valid;
-    if (type == 'cont') {
-      this.binLocInputs.toArray()[index - 1].setFocus();
-    } else {
-      if (index < this.itemCount.length) {
-        this.modelInputs.toArray()[index].setFocus();
-      }
-      this.orderscanning.controls['modelNo_' + index].disable();
-      this.orderscanning.controls['container_' + index].disable();
-      this.orderscanning.controls['binLoc_' + index].disable();
-    }
-    for (let idx of this.itemCount) {
-      if (this.orderscanning.controls['modelNo_' + idx].value != '' && this.orderscanning.controls['modelNo_' + idx].value != null &&
-        this.orderscanning.controls['container_' + idx].value != '' && this.orderscanning.controls['container_' + idx].value != null &&
-        this.orderscanning.controls['binLoc_' + idx].value != '' && this.orderscanning.controls['binLoc_' + idx].value != null) {
-        valid = true;
+    setTimeout(() => {
+
+      if (type == 'cont') {
+        this.binLocInputs.toArray()[index - 1].setFocus();
       } else {
-        valid = false;
-        return valid;
+        if (index < this.itemCount.length) {
+          this.modelInputs.toArray()[index].setFocus();
+        }
+        this.orderscanning.controls['modelNo_' + index].disable();
+        this.orderscanning.controls['container_' + index].disable();
+        this.orderscanning.controls['binLoc_' + index].disable();
       }
-    }
-    if (valid) {
-      //Auto save method
-      if (this.autoSave) {
-        this.orderScanSubmit();
+      for (let idx of this.itemCount) {
+        if (this.orderscanning.controls['modelNo_' + idx].value != '' && this.orderscanning.controls['modelNo_' + idx].value != null &&
+          this.orderscanning.controls['container_' + idx].value != '' && this.orderscanning.controls['container_' + idx].value != null &&
+          this.orderscanning.controls['binLoc_' + idx].value != '' && this.orderscanning.controls['binLoc_' + idx].value != null) {
+          valid = true;
+        } else {
+          valid = false;
+          return valid;
+        }
       }
-    }
+      if (valid) {
+        //Auto save method
+        if (this.autoSave) {
+          this.orderScanSubmit();
+        }
+      }
+
+    }, 800);
   }
 
   //Method enable/disable auto save
@@ -323,7 +331,7 @@ export class OrderscanningPage implements OnInit {
             } else {
               item['containerNumber'] = this.orderscanning.controls['container_' + idx].value;
               item['binLocation'] = this.orderscanning.controls['binLoc_' + idx].value;
-            }          
+            }
           }
         }
       } else {
