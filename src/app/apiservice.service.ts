@@ -6,7 +6,9 @@ import { ToastController, LoadingController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class ApiserviceService {
-  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'
+  // baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
+  baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
+
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
   getOrderScan: string = 'OrdersApi/ScanOrderDetail';
