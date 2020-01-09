@@ -39,7 +39,7 @@ export class ApiserviceService {
   async present() {
     this.isLoading = true;
     return await this.loadingCtrl.create({
-      duration: 3000,
+      // duration: 3000,
       message: 'Please wait...',
       spinner: 'lines',
     }).then(a => {
