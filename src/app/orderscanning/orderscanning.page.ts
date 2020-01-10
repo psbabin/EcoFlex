@@ -31,6 +31,7 @@ export class OrderscanningPage implements OnInit {
   autoSave: boolean;
   message: any;
   checked: any;
+  serialNumbers: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,6 +78,7 @@ export class OrderscanningPage implements OnInit {
     }
     this.itemCount = [];
     this.itemLists = [];
+    this.serialNumbers = [];
     this.custName = this.orderid = this.orderno = null;
     this.orderscanning.controls['order'].enable();
     setTimeout(() => {
@@ -171,6 +173,15 @@ export class OrderscanningPage implements OnInit {
       let temp: any = 0, valid;
       if (value != '' && value != null) {
         if (elementId.startsWith('serial')) {
+
+          for (var i = 0; i < this.serialNumbers.length; i++) {
+            if (value == this.serialNumbers[i]) {
+              this.eventLog = 'Serial Number ' + value + ' already scanned \n' + this.eventLog;
+              this.ecoFlexService.PresentToast('Serial number already scanned', 'danger');
+              evt.target.value = '';
+              return false;
+            }
+          }
           // this.ecoFlexService.present();
           let url = this.ecoFlexService.baseUrl + this.ecoFlexService.serialVerify;
           let jsonobj = {
@@ -180,9 +191,9 @@ export class OrderscanningPage implements OnInit {
           this.ecoFlexService.ajaxCallService(url, "post", jsonobj).then(resp => {
             if (resp['status'] != 'Fail') {
               let items = resp['itemList'];
-              debugger
+              this.serialNumbers.push(value);
               for (let idx in this.itemLists) {
-                if (items[0]['modelNumber'] == this.itemLists[idx]['modelNumber']) {
+                if (items[0]['modelNumber'].toUpperCase() == this.itemLists[idx]['modelNumber'].toUpperCase()) {
                   if (!this.itemLists[idx]['isScanned']) {
                     this.itemLists[idx]['scanCount']++;
                     this.orderscanning.controls['serialNo_' + index].disable();
@@ -220,24 +231,26 @@ export class OrderscanningPage implements OnInit {
                       break;
                     }
                   }
-                } else {
-                  temp++;
                 }
+                //  else {
+                //   temp++;
+                // }
               }
             } else {
               this.ecoFlexService.PresentToast(resp['message'], "danger");
               evt.target.value = '';
+              this.eventLog = 'Serial Number '+ value + resp['message'] + ' \n' + this.eventLog;
               setTimeout(() => {
                 this.serialInputs.toArray()[index - 1].setFocus();
               }, 300);
             }
             // this.ecoFlexService.dismiss();
           })
-          if (temp >= this.itemLists.length) {
-            this.ecoFlexService.PresentToast(this.message[5], "danger");
-            this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
-            evt.target.value = '';
-          }
+          // if (temp >= this.itemLists.length) {
+          //   this.ecoFlexService.PresentToast(this.message[5], "danger");
+          //   this.eventLog = 'Model number ' + value + ' is invalid \n' + this.eventLog;
+          //   evt.target.value = '';
+          // }
           // this.ecoFlexService.dismiss();
         } else {
           for (let idx in this.itemLists) {
@@ -323,7 +336,7 @@ export class OrderscanningPage implements OnInit {
     this.itemLists.map(item => {
       if (item['quantity'] == 1) {
         for (let idx of this.itemCount) {
-          if (item['modelNumber'] == this.orderscanning.controls['modelNo_' + idx].value.toUpperCase()) {
+          if (item['modelNumber'].toUpperCase() == this.orderscanning.controls['modelNo_' + idx].value.toUpperCase()) {
             if (this.new) {
               let val = this.orderscanning.controls['binLoc_' + idx].value.split('/');
               item['containerNumber'] = val[0];
@@ -349,7 +362,7 @@ export class OrderscanningPage implements OnInit {
     //Split multiple qty items into individual 
     items.map(item => {
       for (let i of this.itemCount) {
-        if (item['modelNumber'] == this.orderscanning.controls['modelNo_' + i].value) {
+        if (item['modelNumber'].toUpperCase() == this.orderscanning.controls['modelNo_' + i].value.toUpperCase()) {
           if (this.new) {
             let val = this.orderscanning.controls['binLoc_' + i].value.split('/');
             this.itemLists.push({
@@ -389,6 +402,7 @@ export class OrderscanningPage implements OnInit {
         this.ecoFlexService.PresentToast(resp['message'], "success");
         this.clearForm();
       } else {
+        this.eventLog = 'Order# ' + this.orderscanning.controls['order'].value.trim()  + ' ' + resp['message'] + ' \n' + this.eventLog;
         this.ecoFlexService.PresentToast(resp['message'], "danger");
       }
       this.ecoFlexService.dismiss();
@@ -409,10 +423,10 @@ export class OrderscanningPage implements OnInit {
 
   //Method to clear row data
   clearSerialField(idx) {
-    let value = this.orderscanning.controls['modelNo_' + idx].value.toUpperCase();
+    let value = this.orderscanning.controls['modelNo_' + idx].value;
     if (value != '' && value != null) {
       for (let item of this.itemLists) {
-        if (item['modelNumber'] == value) {
+        if (item['modelNumber'].toUpperCase() == value.toUpperCase()) {
           item['scanCount']--;
           if (item['quantity'] != item['scanCount']) {
             item['isScanned'] = false;
@@ -422,6 +436,11 @@ export class OrderscanningPage implements OnInit {
 
       }
       if (this.new) {
+        this.serialNumbers.map((item, i) => {
+          if (item == this.orderscanning.controls['serialNo_' + idx].value) {
+            this.serialNumbers.splice(i, 1);
+          }
+        })
         this.orderscanning.controls['serialNo_' + idx].enable();
         this.orderscanning.controls['serialNo_' + idx].reset();
       } else {
@@ -433,6 +452,18 @@ export class OrderscanningPage implements OnInit {
 
       this.orderscanning.controls['modelNo_' + idx].reset();
       this.orderscanning.controls['binLoc_' + idx].reset();
+      setTimeout(() => {
+        if (this.new) {
+          this.serialInputs.toArray()[idx - 1].setFocus();
+        } else {
+          this.modelInputs.toArray()[idx - 1].setFocus();
+        }
+      }, 300);
+    } else {
+      if (this.new) {
+        this.orderscanning.controls['serialNo_' + idx].enable();
+        this.orderscanning.controls['serialNo_' + idx].reset();
+      }
       setTimeout(() => {
         if (this.new) {
           this.serialInputs.toArray()[idx - 1].setFocus();
