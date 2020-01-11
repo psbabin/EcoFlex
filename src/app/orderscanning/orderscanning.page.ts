@@ -465,7 +465,15 @@ export class OrderscanningPage implements OnInit {
       if (this.new) {
         this.orderscanning.controls['serialNo_' + idx].enable();
         this.orderscanning.controls['serialNo_' + idx].reset();
+      } else {
+        this.orderscanning.controls['container_' + idx].enable();
+        this.orderscanning.controls['container_' + idx].reset();
       }
+      this.orderscanning.controls['modelNo_' + idx].enable();
+      this.orderscanning.controls['binLoc_' + idx].enable();
+      
+      this.orderscanning.controls['modelNo_' + idx].reset();
+      this.orderscanning.controls['binLoc_' + idx].reset();
       setTimeout(() => {
         if (this.new) {
           this.serialInputs.toArray()[idx - 1].setFocus();
