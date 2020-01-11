@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiserviceService {
-  // baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
-  baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
+  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
+  // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
 
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
@@ -17,7 +18,6 @@ export class ApiserviceService {
 
   isLoading: any;
   ajaxData: any;
-  err: any;
   errorMessages: any;
 
   constructor(public http: HttpClient,
@@ -67,10 +67,8 @@ export class ApiserviceService {
             this.ajaxData = data;
             resolve(this.ajaxData);
           }, (err) => {
-            this.err = err.error;
             this.PresentToast('Unable to reach server, Please try again', 'danger');
-            resolve(this.err);
-
+            resolve(err);
           });
       });
       case 'post': return new Promise(resolve => {	//post return type
@@ -83,7 +81,9 @@ export class ApiserviceService {
           }, (err) => {
             if (err) {
               this.PresentToast('Unable to reach server, Please try again', 'danger');
-              resolve(this.err);
+              // resolve(err);
+              // throw(err);
+              throwError(err);
             } else {
               this.PresentToast('Unable to reach server, Please try again', 'danger');
             }

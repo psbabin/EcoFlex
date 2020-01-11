@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiserviceService } from '../apiservice.service';
 import { AlertController } from '@ionic/angular';
 import { AppComponent } from '../app.component'
+import { error } from 'util';
 
 @Component({
   selector: 'app-orderscanning',
@@ -160,6 +161,7 @@ export class OrderscanningPage implements OnInit {
       })
     } else {
       this.ecoFlexService.PresentToast(this.message[3], "danger");
+      this.eventLog = 'Order # ' + ordervalue + ' ' + this.message[3] + '\n' + this.eventLog;
       this.ecoFlexService.dismiss();
     }
   }
@@ -189,7 +191,7 @@ export class OrderscanningPage implements OnInit {
             "SerialNumber": value
           }
           this.ecoFlexService.ajaxCallService(url, "post", jsonobj).then(resp => {
-            if (resp['status'] != 'Fail') {
+            if (!resp['error'] && resp['status'] != 'Fail') {
               let items = resp['itemList'];
               this.serialNumbers.push(value);
               for (let idx in this.itemLists) {
@@ -246,6 +248,8 @@ export class OrderscanningPage implements OnInit {
               }, 300);
             }
             // this.ecoFlexService.dismiss();
+          }).catch(err => {
+            console.log(err);
           })
           // if (temp >= this.itemLists.length) {
           //   this.ecoFlexService.PresentToast(this.message[5], "danger");
@@ -368,7 +372,7 @@ export class OrderscanningPage implements OnInit {
           if (this.new) {
             let val = this.orderscanning.controls['binLoc_' + i].value.split('/');
             this.itemLists.push({
-              modelNumber: this.orderscanning.controls['modelNo_' + i].value,
+              serialNumber: this.orderscanning.controls['serialNo_' + i].value,
               containerNumber: val[0],
               binLocation: val[1].trim(),
               isScanned: item['isScanned'],
@@ -402,6 +406,7 @@ export class OrderscanningPage implements OnInit {
     this.ecoFlexService.ajaxCallService(savescanorder, "post", jsonobj).then(resp => {
       if (resp['status'] == 'Success') {
         this.ecoFlexService.PresentToast(resp['message'], "success");
+        this.eventLog = 'Order# ' + this.orderscanning.controls['order'].value.trim()  + ' ' + resp['message'] + ' \n' + this.eventLog;
         this.clearForm();
       } else {
         this.eventLog = 'Order# ' + this.orderscanning.controls['order'].value.trim()  + ' ' + resp['message'] + ' \n' + this.eventLog;
