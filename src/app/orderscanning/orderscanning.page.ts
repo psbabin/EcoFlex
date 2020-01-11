@@ -227,6 +227,7 @@ export class OrderscanningPage implements OnInit {
                   } else {
                     if (this.itemLists[idx]['isScanned']) {
                       this.ecoFlexService.PresentToast(this.message[4], "danger");
+                      this.eventLog = 'Serial number ' + value + ' already scanned \n' + this.eventLog;
                       evt.target.value = '';
                       break;
                     }
@@ -267,6 +268,7 @@ export class OrderscanningPage implements OnInit {
               } else {
                 if (this.itemLists[idx]['isScanned']) {
                   this.ecoFlexService.PresentToast(this.message[4], "danger");
+                  this.eventLog = 'Model number ' + value + ' already scanned \n' + this.eventLog;
                   evt.target.value = '';
                   break;
                 }
