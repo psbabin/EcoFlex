@@ -7,8 +7,8 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiserviceService {
-  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
-  // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
+  // baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
+  baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
 
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
