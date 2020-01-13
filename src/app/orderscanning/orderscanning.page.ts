@@ -476,11 +476,10 @@ export class OrderscanningPage implements OnInit {
       if (this.new) {
         this.orderscanning.controls['serialNo_' + idx].enable();
         this.orderscanning.controls['serialNo_' + idx].reset();
-        // this.orderscanning.controls['serialNo_' + idx].setValue('Nick');
+        this.orderscanning.controls['serialNo_' + idx].setValue(' ');
       } else {
         this.orderscanning.controls['container_' + idx].enable();
         this.orderscanning.controls['container_' + idx].reset();
-        // this.orderscanning.controls['container_' + idx].setValue('');
       }
       this.orderscanning.controls['modelNo_' + idx].enable();
       this.orderscanning.controls['binLoc_' + idx].enable();
