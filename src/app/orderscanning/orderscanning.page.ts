@@ -345,8 +345,8 @@ export class OrderscanningPage implements OnInit {
 
   //Method to submit order scan
   orderScanSubmit() {
-    let items = [];
-    this.itemLists.map(item => {
+    let items = [], itemLists:any = JSON.parse(JSON.stringify(this.itemLists));
+    itemLists.map(item => {
       if (item['quantity'] == 1) {
         for (let idx of this.itemCount) {
           if (item['modelNumber'].toUpperCase() == this.orderscanning.controls['modelNo_' + idx].value.toUpperCase()) {
@@ -367,9 +367,9 @@ export class OrderscanningPage implements OnInit {
       }
     })
     //Remove multiple qty items
-    for (let i = this.itemLists.length - 1; i >= 0; i--) {
-      if (this.itemLists[i]['delete']) {
-        this.itemLists.splice(i, 1);
+    for (let i = itemLists.length - 1; i >= 0; i--) {
+      if (itemLists[i]['delete']) {
+        itemLists.splice(i, 1);
       }
     }
     //Split multiple qty items into individual 
@@ -378,7 +378,7 @@ export class OrderscanningPage implements OnInit {
         if (item['modelNumber'].toUpperCase() == this.orderscanning.controls['modelNo_' + i].value.toUpperCase()) {
           if (this.new) {
             let val = this.orderscanning.controls['binLoc_' + i].value.split('/');
-            this.itemLists.push({
+            itemLists.push({
               serialNumber: this.orderscanning.controls['serialNo_' + i].value,
               containerNumber: val[0],
               binLocation: val[1].trim(),
@@ -387,7 +387,7 @@ export class OrderscanningPage implements OnInit {
               quantity: 1
             })
           } else {
-            this.itemLists.push({
+            itemLists.push({
               modelNumber: this.orderscanning.controls['modelNo_' + i].value,
               containerNumber: this.orderscanning.controls['container_' + i].value,
               binLocation: this.orderscanning.controls['binLoc_' + i].value,
@@ -405,10 +405,11 @@ export class OrderscanningPage implements OnInit {
       "orderNumber": this.orderscanning.controls['order'].value.trim(),
       "orderId": this.orderid,
       "customerName": this.custName,
-      "itemList": this.itemLists,
+      "itemList": itemLists,
       "isNewScreen": this.new ? true : false
     }
     console.log(jsonobj);
+    console.log(this.itemLists);
     this.ecoFlexService.present();
     this.ecoFlexService.ajaxCallService(savescanorder, "post", jsonobj).then(resp => {
       if (resp['status'] == 'Success') {
@@ -438,6 +439,7 @@ export class OrderscanningPage implements OnInit {
   //Method to clear row data
   clearSerialField(idx) {
     let value = this.orderscanning.controls['modelNo_' + idx].value;
+    debugger
     if (value != '' && value != null) {
       for (let item of this.itemLists) {
         if (item['modelNumber'].toUpperCase() == value.toUpperCase()) {
