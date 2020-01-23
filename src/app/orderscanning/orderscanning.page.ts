@@ -439,7 +439,6 @@ export class OrderscanningPage implements OnInit {
   //Method to clear row data
   clearSerialField(idx) {
     let value = this.orderscanning.controls['modelNo_' + idx].value;
-    debugger
     if (value != '' && value != null) {
       for (let item of this.itemLists) {
         if (item['modelNumber'].toUpperCase() == value.toUpperCase()) {
