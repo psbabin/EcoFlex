@@ -334,7 +334,7 @@ export class OrderscanningPage implements OnInit {
     }, 300);
   }
 
-  //Method enable/disable auto save
+  //Method to enable/disable auto save
   isChecked(check) {
     if (check == true) {
       this.autoSave = true;

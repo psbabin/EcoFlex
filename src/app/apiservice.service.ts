@@ -19,6 +19,7 @@ export class ApiserviceService {
   isLoading: any;
   ajaxData: any;
   errorMessages: any;
+  noInternet: boolean;
 
   constructor(public http: HttpClient,
     public toastController: ToastController,
@@ -60,36 +61,41 @@ export class ApiserviceService {
     headers.append('Access-Control-Allow-Methods', 'POST, GET ,OPTIONS');
     headers.append('Access-Control-Allow-Headers', 'application/json');
     headers.append('Content-Type', 'application/json');
-    switch (dataType) {
-      case 'get': return new Promise(resolve => {  //get return type	
-        this.http.get(dataUrl)
-          .subscribe(data => {
-            this.ajaxData = data;
-            resolve(this.ajaxData);
-          }, (err) => {
-            this.PresentToast('Unable to reach server, Please try again', 'danger');
-            resolve(err);
-          });
-      });
-      case 'post': return new Promise(resolve => {	//post return type
-        // this.presentLoading();
-
-        this.http.post(dataUrl, dataParam, { headers: headers })
-          .subscribe(data => {
-            this.ajaxData = data;
-            resolve(this.ajaxData);
-          }, (err) => {
-            if (err) {
-              this.PresentToast('Unable to reach server, Please try again', 'danger');
-              // resolve(err);
-              // throw(err);
-              throwError(err);
-            } else {
-              this.PresentToast('Unable to reach server, Please try again', 'danger');
-            }
-          });
-      });
-    }
+    if (!this.noInternet) {
+      switch (dataType) {
+        case 'get': return new Promise(resolve => {  //get return type	
+          this.http.get(dataUrl)
+            .subscribe(data => {
+              this.ajaxData = data;
+              resolve(this.ajaxData);
+            }, (err) => {
+              this.PresentToast('Network error, Please try again', 'danger');
+              resolve(err);
+            });
+        });
+        case 'post': return new Promise(resolve => {	//post return type
+          // this.presentLoading();
+  
+          this.http.post(dataUrl, dataParam, { headers: headers })
+            .subscribe(data => {
+              this.ajaxData = data;
+              resolve(this.ajaxData);
+            }, (err) => {
+              if (err) {
+                this.PresentToast('Network error, Please try again', 'danger');
+                // resolve(err);
+                // throw(err);
+                throwError(err);
+              } else {
+                this.PresentToast('Network error, Please try again', 'danger');
+              }
+            });
+        });
+      } 
+    } else {
+      this.PresentToast('Network error! Check your network and try again.', 'danger');
+      this.dismiss();
+    }   
   }
 
 }
