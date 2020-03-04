@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ApiserviceService } from './apiservice.service';
 import { Network } from '@ionic-native/network/ngx';
+import { variable } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,8 @@ import { Network } from '@ionic-native/network/ngx';
 export class AppComponent {
   isTablet: boolean;
   networkStatus: any;
-  version: string = "0.0.6"; //UAT
-  // version: string = "0.0.4"; //PROD
+  // version: string = "0.0.8"; //UAT
+  version: string = "0.0.6"; //PROD
 
   constructor(
     private platform: Platform,
@@ -50,10 +51,25 @@ export class AppComponent {
 
   getErrorMessages() {
     let messageurl = this.ecoFlexService.baseUrl + this.ecoFlexService.errMessage;
+    let mode = this.ecoFlexService.baseUrl.includes("https") ? "PROD" : "UAT";
     this.ecoFlexService.ajaxCallService(messageurl, "post", '').then(resp => {
-      console.log(resp);
       this.ecoFlexService.errorMessages = resp;
-      localStorage.setItem("Message", JSON.stringify(resp));
+      localStorage.setItem("Message", JSON.stringify(resp['messages']));
+      if (mode == "UAT") {
+        if (resp['appVersionUAT'] != this.version) {
+          this.ecoFlexService.presentAlert();
+          this.ecoFlexService.versionChecked = false;
+        } else {
+          this.ecoFlexService.versionChecked = true;
+        }
+      } else {
+        if (resp['appVersionPRD'] != this.version) {
+          this.ecoFlexService.presentAlert();
+          this.ecoFlexService.versionChecked = false;
+        } else {
+          this.ecoFlexService.versionChecked = true;
+        }
+      }
     })
   }
 

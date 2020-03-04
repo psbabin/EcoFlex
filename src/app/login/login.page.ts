@@ -71,23 +71,27 @@ export class LoginPage implements OnInit {
       "Password": this.logingrp.value.userPwd
     }
     let userName = this.logingrp.value.userEmail;
-    this.ecoFlexService.present();
-    this.ecoFlexService.ajaxCallService(loginUrl, "post", dataParam).then(resp => {
-      console.log("hai", resp);
-      if (resp['status'] == "Success") {
-        localStorage.setItem("Id", JSON.stringify(resp['userId']));
-        localStorage.setItem("userName", userName);
-        this.routeTo.navigate(["/menus"]);
-        this.errPassword = false;
-      } else {
-        this.ecoFlexService.PresentToast(resp['message'], 'danger');
-      }
-
-      this.ecoFlexService.dismiss();
-    }).catch(err => {
-      this.ecoFlexService.PresentToast('Unable to reach server, Please try again', 'danger');
-      this.ecoFlexService.dismiss();
-    });
+    if (this.ecoFlexService.versionChecked) {
+      this.ecoFlexService.present();
+      this.ecoFlexService.ajaxCallService(loginUrl, "post", dataParam).then(resp => {
+        console.log("hai", resp);
+        if (resp['status'] == "Success") {
+          localStorage.setItem("Id", JSON.stringify(resp['userId']));
+          localStorage.setItem("userName", userName);
+          this.routeTo.navigate(["/menus"]);
+          this.errPassword = false;
+        } else {
+          this.ecoFlexService.PresentToast(resp['message'], 'danger');
+        }
+  
+        this.ecoFlexService.dismiss();
+      }).catch(err => {
+        this.ecoFlexService.PresentToast('Unable to reach server, Please try again', 'danger');
+        this.ecoFlexService.dismiss();
+      });
+    } else {
+      this.ecoFlexService.presentAlert();
+    }
   }
 
   //check if model is empty

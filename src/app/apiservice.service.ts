@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiserviceService {
-  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/';
-  // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/';
+  // baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'; //UAT
+  // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/'; //PROD Old
+  baseUrl: string = 'https://www2.order-fulfillment.bz/ecoflex/'; //PROD New
 
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
@@ -20,10 +21,12 @@ export class ApiserviceService {
   ajaxData: any;
   errorMessages: any;
   noInternet: boolean;
+  versionChecked: boolean;
 
   constructor(public http: HttpClient,
     public toastController: ToastController,
-    public loadingCtrl: LoadingController) { }
+    public loadingCtrl: LoadingController,
+    public alert: AlertController) { }
   async PresentToast(msg, color) {
     const toast = await this.toastController.create({
       message: msg,
@@ -98,4 +101,23 @@ export class ApiserviceService {
     }   
   }
 
+  //Method to present alert fro App update
+  async presentAlert() {
+		const alert = await this.alert.create({
+			header: "App Update",
+			message: "A new version available for the app, Kindly update to the latest version!",
+      buttons: [
+        {
+          text: 'Done',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah', blah);
+            navigator['app'].exitApp();
+          }
+        }
+      ]
+		});
+		await alert.present();
+	}
 }
