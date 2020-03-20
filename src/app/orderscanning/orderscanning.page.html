@@ -25,7 +25,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-no-padding">
-  <ion-row>
+  <!-- <ion-row>
     <ion-col size="12">
       <div class="input-radio">
         <input type="radio" name="window" checked id="old" (change)="windowTypeChange('old')">
@@ -38,7 +38,7 @@
         </label>
       </div>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
   <form [formGroup]="orderscanning">
     <ion-row class="row-padd">
       <ion-col size="11">
@@ -66,7 +66,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="old">
+    <!-- <ion-row *ngIf="old">
       <ion-row *ngIf="!appComp.isTablet">
         <ion-col size="12">
           <table *ngFor="let idx of itemCount">
@@ -157,8 +157,8 @@
           </ion-row>
         </ion-col>
       </ion-row>
-    </ion-row>
-    <ion-row *ngIf="new">
+    </ion-row> -->
+    <ion-row>
       <ion-row *ngIf="!appComp.isTablet">
         <ion-col size="12">
           <table *ngFor="let idx of itemCount">
@@ -169,7 +169,8 @@
                 <td>
                   <ion-item>
                     <ion-input type="number" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
-                      formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                      formControlName="serialNo_{{idx}}" (ionFocus)="switchSerialModel($event)"
+                      (keyup.enter)="handleModelScanner($event, idx)">
                     </ion-input>
                   </ion-item>
                 </td>
@@ -180,19 +181,31 @@
                 <th>Model</th>
                 <td>
                   <ion-item>
-                    <ion-input type="text" #modelInputs readonly class="lab-font" id="modelNo_{{idx}}"
-                      formControlName="modelNo_{{idx}}" (keyup.enter)="handleItemScanner('model', idx)">
+                    <ion-input type="text" #modelInputs class="lab-font" id="modelNo_{{idx}}"
+                      (ionFocus)="switchSerialModel($event)" formControlName="modelNo_{{idx}}"
+                      (keyup.enter)="handleModelScanner($event, idx)">
                     </ion-input>
                   </ion-item>
                 </td>
               </tr>
               <tr>
                 <th></th>
-                <th>Container / Bin Location</th>
+                <th>Container </th>
                 <td>
                   <ion-item>
-                    <ion-input type="text" #binLocInputs readonly class="lab-font" id="binLoc_{{idx}}"
-                      formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('binLoc', idx)">
+                    <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
+                      formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
+                    </ion-input>
+                  </ion-item>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <th>Bin Location</th>
+                <td>
+                  <ion-item>
+                    <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}"
+                      formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('bin', idx)">
                     </ion-input>
                   </ion-item>
                 </td>
@@ -212,12 +225,17 @@
             </ion-col>
             <ion-col size="3" class="ion-text-center">
               <ion-item>
-                <ion-label position="floating" class="lab-font lab-color">Model</ion-label>
+                <ion-label position="floating" class="lab-font lab-color">Model </ion-label>
               </ion-item>
             </ion-col>
-            <ion-col size="6" class="ion-text-right">
+            <ion-col size="3" class="ion-text-right">
               <ion-item>
-                <ion-label position="floating" class="lab-font lab-color">Container / Bin Location</ion-label>
+                <ion-label position="floating" class="lab-font lab-color">Container </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3" class="ion-text-right">
+              <ion-item>
+                <ion-label position="floating" class="lab-font lab-color">Bin Location </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -225,21 +243,30 @@
             <ion-col size="3">
               <ion-item>
                 <ion-input type="number" #serialInputs class="lab-font ion-text-uppercase" id="serialNo_{{idx}}"
-                  formControlName="serialNo_{{idx}}" (keyup.enter)="handleModelScanner($event, idx)">
+                  (ionFocus)="switchSerialModel($event)" formControlName="serialNo_{{idx}}"
+                  (keyup.enter)="handleModelScanner($event, idx)">
                 </ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="3">
               <ion-item>
-                <ion-input type="text" #modelInputs readonly class="lab-font" id="modelNo_{{idx}}"
-                  formControlName="modelNo_{{idx}}" (keyup.enter)="handleItemScanner('model', idx)">
+                <ion-input type="text" #modelInputs (ionFocus)="switchSerialModel($event)" class="lab-font"
+                  id="modelNo_{{idx}}" formControlName="modelNo_{{idx}}"
+                  (keyup.enter)="handleModelScanner($event, idx)">
                 </ion-input>
               </ion-item>
             </ion-col>
-            <ion-col size="5.5">
+            <ion-col size="2.3">
               <ion-item>
-                <ion-input type="text" #binLocInputs readonly class="lab-font" id="binLoc_{{idx}}"
-                  formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('binLoc', idx)">
+                <ion-input type="text" #containerInputs class="lab-font" id="container_{{idx}}"
+                  formControlName="container_{{idx}}" (keyup.enter)="handleItemScanner('cont', idx)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3">
+              <ion-item>
+                <ion-input type="text" #binLocInputs class="lab-font" id="binLoc_{{idx}}"
+                  formControlName="binLoc_{{idx}}" (keyup.enter)="handleItemScanner('bin', idx)">
                 </ion-input>
               </ion-item>
             </ion-col>

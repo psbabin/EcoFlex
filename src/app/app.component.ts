@@ -15,8 +15,8 @@ import { variable } from '@angular/compiler/src/output/output_ast';
 export class AppComponent {
   isTablet: boolean;
   networkStatus: any;
-  // version: string = "0.0.8"; //UAT
-  version: string = "0.0.6"; //PROD
+  version: string = "0.0.9"; //UAT
+  // version: string = "0.0.7"; //PROD
 
   constructor(
     private platform: Platform,

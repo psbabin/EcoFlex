@@ -7,9 +7,9 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiserviceService {
-  // baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'; //UAT
+  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'; //UAT
   // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/'; //PROD Old
-  baseUrl: string = 'https://www2.order-fulfillment.bz/ecoflex/'; //PROD New
+  // baseUrl: string = 'https://www2.order-fulfillment.bz/ecoflex/'; //PROD New
 
   userLogin: string = 'UserApi/UserLogin';
   errMessage: string = 'UserApi/GetResponseMessages';
@@ -78,7 +78,7 @@ export class ApiserviceService {
         });
         case 'post': return new Promise(resolve => {	//post return type
           // this.presentLoading();
-  
+
           this.http.post(dataUrl, dataParam, { headers: headers })
             .subscribe(data => {
               this.ajaxData = data;
@@ -94,18 +94,18 @@ export class ApiserviceService {
               }
             });
         });
-      } 
+      }
     } else {
       this.PresentToast('Network error! Check your network and try again.', 'danger');
       this.dismiss();
-    }   
+    }
   }
 
   //Method to present alert fro App update
   async presentAlert() {
-		const alert = await this.alert.create({
-			header: "App Update",
-			message: "A new version available for the app, Kindly update to the latest version!",
+    const alert = await this.alert.create({
+      header: "App Update",
+      message: "A new version available for the app, Kindly update to the latest version!",
       buttons: [
         {
           text: 'Done',
@@ -117,7 +117,7 @@ export class ApiserviceService {
           }
         }
       ]
-		});
-		await alert.present();
-	}
+    });
+    await alert.present();
+  }
 }
