@@ -1,0 +1,114 @@
+<ion-header class="ion-no-padding class-headerimg">
+  <div class="ion-text-center ion-text-uppercase title">BULK ORDER SCAN</div>
+  <ion-toolbar class="tool2">
+    <ion-grid class="ion-no-padding">
+      <ion-row class="header-row">
+        <!-- <ion-col size="4" class="ion-text-left padd-left-0"> -->
+        <ion-buttons class="back-marg">
+          <ion-button style="font-size: 22px;color: #ffffff" (click)="goToback()">BACK</ion-button>
+        </ion-buttons>
+        <!-- </ion-col> -->
+        <!-- <ion-col size="1"></ion-col> -->
+        <!-- <ion-col size="2" class="ion-text-center"> -->
+        <ion-button fill='clear' class="save-center" type="submit" (click)="orderSubmit()" [disabled]="bulkorderscan.invalid || enbaleAutoSave == true || enableSaveBtn == false">SAVE
+        </ion-button>
+        <!-- </ion-col> -->
+        <!-- <ion-col size="1"></ion-col> -->
+        <!-- <ion-col size="4" class="ion-text-right"> -->
+        <ion-buttons class="back-marg">
+          <ion-button style="font-size: 22px;color: #ffffff" (click)="clearForm()">CLEAR</ion-button>
+        </ion-buttons>
+        <!-- </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="row-padd">
+    <ion-col size="7">
+      <form [formGroup]="bulkorderscan">
+        <ion-item>
+          <ion-label position="floating" class="lab-font lab-color">Order #<span style="color: red;">*</span>
+          </ion-label>
+          <ion-input #order clearInput class="ion-text-uppercase lab-font" type="text" formControlName="order"
+            (keyup.enter)="handleOrderScanner($event)">
+          </ion-input>
+        </ion-item>
+      </form>
+    </ion-col>
+    <ion-col size="2" style="text-align: center;align-items: center;display: flex;">
+      <ion-buttons>
+        <ion-button fill="clear" (click)="orderScan()" type="button">
+          <ion-icon name="search" style="width: 35px; height: 35px; color:darkgray"> </ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="3" style="text-align: center;">
+      <h6 style="margin-bottom: 0px;" class="lab-font">Auto Save</h6><br>
+      <ion-toggle [(ngModel)]="enbaleAutoSave" [checked]="true" (ionChange)="checkAutoSave()"></ion-toggle>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="customer">
+    <ion-col style="font-size: 22px;text-indent: 25px;">
+      <ion-label>Customer:</ion-label>&nbsp;<span style="color: grey;">{{customer}}</span>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="itemList != undefined && itemList.length > 0">
+    <ion-row class="row-padd" style="font-size:25px;font-weight: 600;">
+      <ion-col size="4">
+        <ion-label>ITEM</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>ORDERED QTY</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>SCAN QTY</ion-label>
+      </ion-col>
+      <ion-col size="2"></ion-col>
+    </ion-row>
+    <ion-row class="row-padd" *ngFor="let item of itemList" style="font-size:25px;">
+      <ion-col size="4">
+        <ion-label>{{item.modelNumber}}</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{item.quantity}}</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>{{item.scanCount}}</ion-label>
+      </ion-col>
+      <ion-col size="2" style="font-size: 50px;">
+        <ion-icon [style.color]="item.selected == true ? 'orange' : item.scanCount == item.quantity || item.isScanned == true ? 'green' : item.scanCount == 0 ? 'gray':''" 
+          name="checkmark-circle" (click)="checkItem(item)"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <form [formGroup]="bulkorderscan">
+      <ion-row class="row-padd">
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating" class="lab-font lab-color">Serial #<span style="color: red;">*</span>
+            </ion-label>
+            <ion-input #serial clearInput class="ion-text-uppercase lab-font" type="text" formControlName="serial"
+              (keyup.enter)="handleSerialScanner($event)">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+  
+</ion-content>
+<ion-footer>
+  <ion-row class="marginTL10">
+    <ion-col size="12">
+      <ion-label position="stacked" class="event-font marginTL10">Event Log</ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item class="ion-padding-horizontal">
+        <ion-textarea rows="3" [readonly]='true' [(ngModel)]="eventLog" class="event-font-italic"></ion-textarea>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-footer>
