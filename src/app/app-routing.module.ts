@@ -16,7 +16,11 @@ const routes: Routes = [
   {
     path: 'orderscanning',
     loadChildren: () => import('./orderscanning/orderscanning.module').then(m => m.OrderscanningPageModule)
+  },  {
+    path: 'bulk-order-scan',
+    loadChildren: () => import('./bulk-order-scan/bulk-order-scan.module').then( m => m.BulkOrderScanPageModule)
   },
+
 ];
 
 @NgModule({

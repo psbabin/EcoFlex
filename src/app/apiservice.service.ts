@@ -7,7 +7,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiserviceService {
-  baseUrl: string = 'http://71.252.180.148/Opal/uat/EcoFlex/'; //UAT
+  baseUrl: string = 'http://67.79.237.242/opal/uat/EcoFlex/'; //UAT
   // baseUrl: string = 'https://order-fulfillment.bz/ecoflex/'; //PROD Old
   // baseUrl: string = 'https://www2.order-fulfillment.bz/ecoflex/'; //PROD New
 

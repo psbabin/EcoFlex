@@ -23,5 +23,8 @@ export class MenusPage implements OnInit {
   gotoOrderPage() {
     this.routeto.navigate(["/orderscanning"]);
   }
+  gotoBulkorder(){
+    this.routeto.navigate(['/bulk-order-scan']);
+  }
 
 }

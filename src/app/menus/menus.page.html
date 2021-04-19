@@ -23,10 +23,26 @@
         </ion-button>
       </ion-col>
       <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
+      <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
+      <ion-col size="2" class="ion-padding-vertical ion-text-center" style="padding-right: 0">
+        <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
+          style="background: #f77867">
+          <ion-thumbnail class="scanner-svg">
+            <img src="../../assets/icon/scanner.svg">
+          </ion-thumbnail>
+        </ion-button>
+      </ion-col>
+      <ion-col size="8" class="ion-padding-vertical ion-text-center" style="padding-left: 0">
+        <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
+          style="background: #f77867" (click)="gotoBulkorder()">
+          Bulk Order Scan
+        </ion-button>
+      </ion-col>
+      <ion-col size="1" class="ion-padding-vertical ion-text-center"></ion-col>
       <ion-col size="8" class="ion-padding-vertical ion-text-center"></ion-col>
       <ion-col size="3" class="ion-padding-vertical ion-text-center">
         <ion-button size="large" class="ion-text-uppercase btn-height" color="dark" fill="outline"
-          style="background: #ffffff" (click)="gotoHomePage()">
+          style="background: #ffffff" (click)="gotoBulkorder()">
           <ion-thumbnail class="scanner-svg">
             <img src="../../assets/icon/exit-door.svg">
           </ion-thumbnail>
